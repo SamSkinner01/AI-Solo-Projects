@@ -1,3 +1,4 @@
+import sys
 import numpy as np
 from simulated_annealing import *
 import time
@@ -6,7 +7,7 @@ TEST_RUNS = 50
 
 def test():
     avg_time = 0
-    n = 8
+    n = 15
     temperature = 10
     s, f = 0, 0
     for i in range(TEST_RUNS):

@@ -2,7 +2,7 @@ import random
 import time
 from collections import deque
 
-TIME_LIMIT_IN_SECONDS = 30
+TIME_LIMIT_IN_SECONDS = 10
 TEST_RUNS = 20
 
 class Node:
@@ -36,6 +36,7 @@ class EightPuzzle:
 
         for i in range(TEST_RUNS):
             print("Test run", i+1)
+            self.init_state = self.generate_random_state()
             goal_node = self.breadth_first_search()
             if goal_node is not None:
                 print("Solution found!")
@@ -65,6 +66,7 @@ class EightPuzzle:
         goal_node = self.breadth_first_search()
         if goal_node is not None:
             print("Solution found!")
+            self.print_state(goal_node.state)
             print("Path cost:", goal_node.path_cost)
             print("Actions:")
             actions = []
@@ -152,6 +154,7 @@ class EightPuzzle:
         start = time.time()
 
         if self.goal_test(self.init_state):
+            print(f'The length of reached for this solution is: {len(reached)}')
             return self.init_node
         
         frontier = deque()
@@ -161,10 +164,12 @@ class EightPuzzle:
 
         while frontier:
             node = frontier.popleft()
+            #print(f'The path cost for this solution is: {node.path_cost}')
             
             for child in self.expand(node):
                 s = child.state
                 if self.goal_test(s):
+                        print(f'The length of reached for this solution is: {len(reached)}')
                         return child
                 if s not in reached:
                     reached.append(s)
@@ -174,4 +179,8 @@ class EightPuzzle:
             if end - start > TIME_LIMIT_IN_SECONDS:
                 print("Time limit reached")
                 return None        
+            # if node.path_cost > 31:
+            #     print("Path cost limit reached")
+            #     print(len(reached))
+            #     return None
         return None
